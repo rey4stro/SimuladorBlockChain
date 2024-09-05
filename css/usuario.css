@@ -1,0 +1,98 @@
+@import url(/css/colores.css);
+@import url(/css/styles.css);
+@import url(/css/navbar.css);
+
+
+.content{
+    width: 100%;
+    height: 100%;
+}
+
+#usuarios{
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.crearUsuarios{
+    display: flex;
+    height: 200px;
+    flex-direction: column;
+    padding-left: 50px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.crearUsuarios h1{
+    color: var(--title-color);
+    width: 250px;
+}
+.crearUsuarios input{
+    width: 250px;
+    border-radius: 10px;
+    height: 40px;
+    border: solid var(--border-2);
+}
+.crearUsuarios button{
+    width: 260px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: var(--button-background);
+    font-size: 25px;
+    color: var(--button-color);
+    border: solid var(--button-border);
+}
+
+
+.divusuario{
+    border: solid var(--border);
+    box-shadow: 2px 2px 2px var(--border-1);
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    font-size: 25px;
+    padding: 15px;
+    border-radius: 15px;
+}
+.divusuario label{
+    color: var(--title-color);
+}
+.divusuario input{
+    height: 40px;
+    margin: 10px;
+    border-radius: 10px;
+    border: solid var(--border-2);
+    box-shadow: 2px 2px 2px var(--border-2);
+}
+.divusuario button{
+    height: 40px;
+    border-radius: 25px;
+    text-align: center;
+    font-size: large;
+}
+.btn-eliminar-usuario{
+    background-color: var(--button-2-background);
+    color: var(--button-2-color);
+    border: solid var(--button-2-border);
+}
+.btn-generar-claves{
+    border: solid var(--button-border);
+    background-color: var(--button-background);
+    color: var(--button-color);
+}
+#btn-crear-usuario{
+    height: 40px;
+    width: 500px;
+    margin-top: 25px;
+    margin-left: 25px;
+    border-radius: 25px;
+    color: var(--button-color);
+    background-color: var(--button-background);
+    text-align: center;
+    font-size: large;
+}

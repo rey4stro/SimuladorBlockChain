@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/usuario.css">
+    <link
+        href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAKLtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREQAAAAAAEREREQAAAAERAAAREAAAEQAAAAARAAARARERABEAARABEAEQARABEAEQARABEAEQARERAAEQARABEAEQARAAEQEREQARAAARAAAAABEAAAERAAAREAAAABEREREAAAAAABERAAAAAAAAAAAAAAD//wAA/D8AAPAPAADjxwAAz/MAAMgzAACZmQAAmZkAAJg5AACZmQAAyDMAAM/zAADjxwAA8A8AAPw/AAD//wAA"
+        rel="icon" type="image/x-icon">
+    <title>Usuarios</title>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <a href="../Index.html">Inicio</a>
+            <a href="./usuarios.html">Usuarios</a>
+            <a href="./blockChain.html">BlockChain</a>
+            <a href="./transacciones.html">Transacciones</a>
+        </ul>
+    </nav>
+    <div class="content">
+        <hr>
+        <div class="crearUsuarios">
+            <h1>Usuarios</h1>
+            <input type="text" id="nombreUsuario" placeholder="Nombre del usuario">
+            <button id="crearUsuario">Crear Usuario</button>
+        </div>
+        <hr>
+        <div id="usuarios"></div>
+    </div>
+    <script>
+        document.getElementById('crearUsuario').addEventListener('click', () => {
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            if (!nombreUsuario) {
+                alert('Por favor, ingrese un nombre.');
+                return;
+            }
+
+            fetch('/crear_usuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: nombreUsuario })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        cargarUsuarios();
+                    }
+                });
+        });
+
+        function cargarUsuarios() {
+            fetch('/usuarios.json')
+                .then(response => response.json())
+                .then(data => {
+                    const usuariosContainer = document.getElementById('usuarios');
+                    usuariosContainer.innerHTML = '';
+                    data.forEach(usuario => {
+                        const usuarioDiv = document.createElement('div');
+                        usuarioDiv.classList.add('divusuario');
+                        usuarioDiv.innerHTML = `
+                            <label>Nombre: ${usuario.nombre}</label>
+                            <label>ID:</label>
+                            <input type="text" id="ID-${usuario.id}" value="${usuario.id}" size="50">
+                            <label for="clavePublica-${usuario.id}">Clave Pública</label>
+                            <input type="text" id="clavePublica-${usuario.id}" value="${usuario.clave_publica}" size="50">
+                            <button class="copiarClave" data-id="clavePublica-${usuario.id}">Copiar</button><br>
+                            <label for="clavePrivada-${usuario.id}">Clave Privada</label>
+                            <input type="text" id="clavePrivada-${usuario.id}" value="${usuario.clave_privada}" size="50">
+                            <button class="copiarClave" data-id="clavePrivada-${usuario.id}">Copiar</button><br>
+                            <button class="eliminarUsuario" data-id="${usuario.id}">Eliminar Usuario</button>
+                            <button id="verSaldo" class="verSaldo" data-id="${usuario.id}">Saldo</button>
+                            <label id="saldo-${usuario.id}" style="display: none;">Saldo: ${usuario.saldo}</label>
+
+                        `;
+                        usuariosContainer.appendChild(usuarioDiv);
+                    });
+                    document.querySelectorAll('.verSaldo').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const userId = event.target.getAttribute('data-id');
+                            const saldoLabel = document.getElementById(`saldo-${userId}`);
+                            console.log(userId)
+                            if (saldoLabel.style.display === 'none') {
+                                fetch(`/calcular_saldo/${userId}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            saldoLabel.innerText = `Saldo: ${data.saldo}`;
+                                            saldoLabel.style.display = 'block';
+                                        }
+                                    });
+                            } else {
+                                saldoLabel.style.display = 'none';
+                            }
+                        });
+                    });
+                    document.querySelectorAll('.eliminarUsuario').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const userId = event.target.getAttribute('data-id');
+                            fetch(`/eliminar_usuario/${userId}`, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        cargarUsuarios();
+                                    }
+                                });
+                        });
+                    });
+
+                    document.querySelectorAll('.copiarClave').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const inputId = event.target.getAttribute('data-id');
+                            const input = document.getElementById(inputId);
+                            input.select();
+                            document.execCommand('copy');
+                            alert('Clave copiada al portapapeles.');
+                        });
+                    });
+                });
+
+
+
+
+        }
+
+
+        document.addEventListener('DOMContentLoaded', cargarUsuarios);
+    </script>
+</body>
+
+</html>

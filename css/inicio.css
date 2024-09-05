@@ -1,0 +1,54 @@
+@import url(colores.css);
+@import url(navbar.css);
+@import url(styles.css);
+
+
+.content{
+    width: 100%;
+    height: 100%;
+}
+.content2{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+}
+
+.logo{
+    height: 500px;
+    width: 500px;
+}
+.logo img{
+    width: 100%;
+    height: 100%;
+}
+.universidad{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    height: 100px;
+    font-size: 30px;
+    text-transform: capitalize;
+    color: var(--title-color);
+}
+.derecha{
+    justify-content: center;
+    padding: 20px;
+}
+.titulo{
+
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    height: 100px;
+    font-size: 35px;
+    color: var(--title-color);
+    text-transform: capitalize;
+}
+.integrantes{
+ 
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}

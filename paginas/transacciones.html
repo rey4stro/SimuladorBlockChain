@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/transacciones.css">
+    <link
+        href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAKLtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREQAAAAAAEREREQAAAAERAAAREAAAEQAAAAARAAARARERABEAARABEAEQARABEAEQARABEAEQARERAAEQARABEAEQARAAEQEREQARAAARAAAAABEAAAERAAAREAAAABEREREAAAAAABERAAAAAAAAAAAAAAD//wAA/D8AAPAPAADjxwAAz/MAAMgzAACZmQAAmZkAAJg5AACZmQAAyDMAAM/zAADjxwAA8A8AAPw/AAD//wAA"
+        rel="icon" type="image/x-icon">
+    <title>Transacciones</title>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <a href="../Index.html">Inicio</a>
+            <a href="./usuarios.html">Usuarios</a>
+            <a href="./blockChain.html">BlockChain</a>
+            <a href="./transacciones.html">Transacciones</a>
+        </ul>
+    </nav>
+    <div class="content">
+        <div class="formularios">
+
+            <form id="formularioTransaccion" class="formulario">
+                <label for="valorTransaccion">Valor de la Transacción:</label>
+                <input type="number" id="valorTransaccion" required>
+
+                <label for="clavePrivada">Clave Privada:</label>
+                <input type="text" id="clavePrivada" required>
+
+                <label for="idEmisor">ID del Emisor:</label>
+                <input type="text" id="idEmisor" required>
+
+                <label for="idDestinatario">ID del Destinatario:</label>
+                <input type="text" id="idDestinatario" required>
+
+                <button type="button" id="firmar">Firmar</button>
+                <label for="firma">Firma:</label>
+                <input type="text" id="firma" readonly>
+
+                <button type="button" id="hacerTransaccion" style="display: none;">Hacer Transacción</button>
+            </form>
+
+            <form id="verificar_firma" class="formulario">
+                <label for="valorFirma">Valor Transacción:</label>
+                <input type="number" id="valorFirma" required>
+
+                <label for="clavePublica">Clave Publica:</label>
+                <input type="text" id="clavePublica" required>
+
+                <label for="firmaVerificar">Firma:</label>
+                <input type="text" id="firmaVerificar" required>
+
+                <label for="idDestinatario">ID del Destinatario:</label>
+                <input type="text" id="verificaridDestinatario" required>
+
+                <button type="button" id="verificar">Verificar</button>
+
+                <label for="respuestaFirma">Respuesta:</label>
+                <input type="text" id="respuestaFirma" readonly>
+
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById('firmar').addEventListener('click', () => {
+            const valorTransaccion = document.getElementById('valorTransaccion').value;
+            const clavePrivada = document.getElementById('clavePrivada').value;
+            const idDestinatario = document.getElementById('idDestinatario').value;
+           
+
+            if (!valorTransaccion || !clavePrivada || !idDestinatario) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            fetch('/firmar_transaccion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    valor_transaccion: valorTransaccion,
+                    clave_privada: clavePrivada,
+                    id_destinatario: idDestinatario 
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('firma').value = data.firma;
+                        document.getElementById('hacerTransaccion').style.display = 'block';
+                    } else {
+                        alert('Error al firmar la transacción: ' + data.error);
+                    }
+                });
+        });
+
+        document.getElementById('hacerTransaccion').addEventListener('click', () => {
+            fetch('/agregar_transaccion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    valor: document.getElementById('valorTransaccion').value,
+                    firma: document.getElementById('firma').value,
+                    id_destinatario: document.getElementById('idDestinatario').value,
+                    id_emisor:  document.getElementById('idEmisor').value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Transacción realizada con éxito.');
+                    } else {
+                        alert('Error al realizar la transacción: ' + data.error);
+                    }
+                });
+        });
+
+
+        document.getElementById('verificar').addEventListener('click', () => {
+            const valorFirma = document.getElementById('valorFirma').value;
+            const clavePublica = document.getElementById('clavePublica').value;
+            const firmaVerificar = document.getElementById('firmaVerificar').value;
+            const verificaridDestinatario = document.getElementById('verificaridDestinatario').value;
+
+
+            console.log(valorFirma)
+            console.log(clavePublica)
+            console.log(firmaVerificar)
+            console.log(verificaridDestinatario)
+
+            if (!valorFirma || !clavePublica || !firmaVerificar || !verificaridDestinatario) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            fetch('/verificar_firma', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    valorFirma: valorFirma,
+                    clavePublica: clavePublica,
+                    firmaVerificar: firmaVerificar,
+                    verificaridDestinatario: verificaridDestinatario
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('respuestaFirma').value = 'Firma válida';
+                    } else {
+                        document.getElementById('respuestaFirma').value = 'Firma inválida';
+                    }
+                });
+        });
+
+    </script>
+</body>
+
+</html>

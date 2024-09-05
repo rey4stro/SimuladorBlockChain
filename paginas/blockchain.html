@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/blockchain.css">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAKLtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREQAAAAAAEREREQAAAAERAAAREAAAEQAAAAARAAARARERABEAARABEAEQARABEAEQARABEAEQARERAAEQARABEAEQARAAEQEREQARAAARAAAAABEAAAERAAAREAAAABEREREAAAAAABERAAAAAAAAAAAAAAD//wAA/D8AAPAPAADjxwAAz/MAAMgzAACZmQAAmZkAAJg5AACZmQAAyDMAAM/zAADjxwAA8A8AAPw/AAD//wAA" rel="icon" type="image/x-icon">
+    <title>BlockChain</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <a href="../Index.html">Inicio</a>
+            <a href="./usuarios.html">Usuarios</a>
+            <a href="./blockChain.html">BlockChain</a>
+            <a href="./transacciones.html">Transacciones</a>
+        </ul>
+    </nav>
+    <div class="content">
+        <div id="blocksContainer" class="bloques"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', cargarBloques);
+
+        function cargarBloques() {
+            fetch('/blockchain.json')
+                .then(response => response.json())
+                .then(data => {
+                    const blocksContainer = document.getElementById('blocksContainer');
+                    blocksContainer.innerHTML = '';
+                    data.forEach(block => {
+                        const blockDiv = document.createElement('div');
+                        blockDiv.classList.add('divBloque');
+                        blockDiv.innerHTML = `
+                            <label>Número de Bloque: ${block.numero}</label>
+                            <label for="${block.hash_anterior}">Hash Anterior:</label>
+                            <input type="Text" value="${block.hash_anterior}">
+                            <label>Nonce:</label>
+                            <input type="Text" value="${block.nonce}">
+                            <label>Merkle Root: </label>
+                            <input type="Text" value="${block.merkle_root}">
+                            <label>Transacciones:</label>   
+                            <div class="transacciones">
+                           
+                                ${block.transacciones.map(transaccion => `
+                                    <div class="transaccion">
+                                        <label>Numero:</label>
+                                        <input type="Text" value="${transaccion.numero}">
+                                        <label>Valor:</label>
+                                        <input type="Text" value="${transaccion.valor}">
+                                        <label>Firma:</label>  
+                                        <input type="Text" value="${transaccion.firma}">
+                                        <label>ID del Destinatario:</label> 
+                                        <input type="Text" value="${transaccion.id_destinatario}">
+                                        <label>ID del Emisor:</label> 
+                                        <input type="Text" value="${transaccion.id_emisor}">
+                                    </div>
+                                `).join('')}
+                           
+                            </div>
+                            <label>Proof of Work: </label>
+                            <input type="Text" value="${block.POW}">
+                            <label>Hash Actual:</label>
+                            <input type="Text" value=" ${block.hash_actual}">
+                        `;
+                        blocksContainer.appendChild(blockDiv);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>

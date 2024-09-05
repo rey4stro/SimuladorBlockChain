@@ -1,0 +1,49 @@
+@import url(./styles.css);
+@import url(./colores.css);
+@import url(./navbar.css);
+
+
+
+
+
+.formularios{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.formulario{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    border: solid var(--border);
+    padding: 10px;
+    font-size: 25px;
+    border-radius: 15px;
+    gap: 5px;
+}
+.formulario label{
+    color: var(--title-color);
+}
+.formulario input{
+    border: solid var(--border);
+    height: 30px;
+    border-radius: 10px;
+}
+.formulario button{
+    height: 30px;
+    border: solid var(--button-border);
+    background-color: var(--button-background);
+    color: var(--button-color);
+    border-radius: 10px;
+}
+.formulario button:hover{
+    background-color: var(--button-border);
+}
+.content{
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}

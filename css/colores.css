@@ -1,0 +1,13 @@
+:root{
+    --background-color: white;
+    --text-color:black;
+    --title-color: rgb(57, 9, 86);
+    --border: rgb(68, 55, 55);
+    --border-2: rgb(83, 84, 83);
+    --button-color: rgb(0, 0, 0);
+    --button-background: rgb(105, 255, 210);
+    --button-border: rgb(36, 191, 144);
+    --button-2-color: white;
+    --button-2-background: salmon;
+    --button-2-border: rgb(237, 68, 50);
+}
