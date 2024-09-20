@@ -28,7 +28,7 @@
     margin: auto;
     text-align: center;
     height: 100px;
-    font-size: 30px;
+    font-size: 20px;
     text-transform: capitalize;
     color: var(--title-color);
 }
@@ -37,9 +37,11 @@
     padding: 20px;
 }
 .titulo{
-
     width: 100%;
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     height: 100px;
     font-size: 35px;
@@ -51,4 +53,5 @@
     width: 100%;
     margin: auto;
     text-align: center;
+    font-size: 15px
 }
